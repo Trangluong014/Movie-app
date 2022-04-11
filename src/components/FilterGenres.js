@@ -5,6 +5,7 @@ import useData from "../hooks/useData";
 const FilterGenres = () => {
   const [genres, setGenres] = useState();
   let { filter: filterInput, setFilter: setFilterInput } = useData();
+  const [idSelected, setIdSelected] = useState();
 
   useEffect(() => {
     const getData = async () => {
@@ -19,24 +20,31 @@ const FilterGenres = () => {
   }, []);
   return (
     <div className="genres">
-      {genres?.map(({ name, id }) => (
-        <button
-          key={id}
-          value={filterInput}
-          onClick={() => setFilterInput(id)}
-          className="genres-item"
-        >
-          {name}
-        </button>
-      ))}
       <button
         key="clear-filter"
         value="clear-filter"
-        onClick={() => setFilterInput("")}
+        onClick={() => {
+          setFilterInput("");
+          setIdSelected(null);
+        }}
         className="genres-item"
       >
         All Genres
       </button>
+
+      {genres?.map(({ name, id }) => (
+        <button
+          key={id}
+          value={filterInput}
+          onClick={() => {
+            setFilterInput(id);
+            setIdSelected(id);
+          }}
+          className={idSelected !== id ? "genres-item" : "genres-item selected"}
+        >
+          {name}
+        </button>
+      ))}
     </div>
   );
 };

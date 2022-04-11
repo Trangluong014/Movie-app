@@ -6,24 +6,18 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import apiConfig from "../app/apiConfig";
 import { useLocation } from "react-router-dom";
-import useFavorite from "../hooks/useFavorite";
-import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import noImage from "../no-image.png";
 
 const MovieCarousel = ({ movies }) => {
   let navigate = useNavigate();
-  const isLogin = useAuth();
   const location = useLocation();
   const [movieIndex, setMovieIndex] = useState(0);
-  const idList = useFavorite().idList;
-  const setIdList = useFavorite().setIdList;
   const backgroundImage = apiConfig.originalImage(
     movies[movieIndex]?.backdrop_path
   );
 
   const posterImage = apiConfig.w500Image(movies[movieIndex]?.poster_path);
-  console.log(isLogin.isAuthenticated);
 
   if (!movies[movieIndex]) return <div />;
 
@@ -71,29 +65,6 @@ const MovieCarousel = ({ movies }) => {
           >
             See More
           </Button>
-          {idList[movies[movieIndex].id] ? (
-            <Button
-              onClick={() =>
-                setIdList({ ...idList, [movies[movieIndex].id]: false })
-              }
-            >
-              Remove from Favorite
-            </Button>
-          ) : (
-            <Button
-              onClick={
-                isLogin.isAuthenticated
-                  ? () =>
-                      setIdList({
-                        ...idList,
-                        [movies[movieIndex].id]: movies[movieIndex],
-                      })
-                  : () => navigate("/login")
-              }
-            >
-              Add To Favorite
-            </Button>
-          )}
         </CardActions>
       </Card>
     </>

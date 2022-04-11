@@ -15,11 +15,6 @@ import "./MovieDetails.css";
 const MovieDetails = () => {
   const [movie, setMovie] = useState();
   const { movieId } = useParams();
-  let navigate = useNavigate();
-  const isLogin = useAuth();
-  const idList = useFavorite().idList;
-  const setIdList = useFavorite().setIdList;
-  const location = useLocation();
 
   const { isAuthenticated } = useAuth();
   const { movieIds, addMovie, removeMovie } = useFavorite();

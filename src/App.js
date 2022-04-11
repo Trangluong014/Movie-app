@@ -17,10 +17,10 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#00b4cc",
+        main: "#1f1f1f",
       },
       secondary: {
-        main: "#9dbfaf",
+        main: "#428bca",
       },
     },
   });
@@ -45,9 +45,11 @@ function App() {
                 <Route
                   path="/favorite"
                   element={
-                    <AuthRequire>
-                      <AccountPage />
-                    </AuthRequire>
+                    <DataContextProvider>
+                      <AuthRequire>
+                        <AccountPage />
+                      </AuthRequire>
+                    </DataContextProvider>
                   }
                 />
               </Route>

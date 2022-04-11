@@ -47,10 +47,12 @@ const FavoriteProvider = ({ children }) => {
   const { user } = useAuth();
 
   useEffect(() => {
-    const localStorageUserMovieIds = window.localStorage.getItem(
-      LOCAL_STORAGE_USER_MOVIE_IDS
-    );
-    if (user && localStorageUserMovieIds) {
+    const localStorageUserMovieIds =
+      localStorage.getItem(LOCAL_STORAGE_USER_MOVIE_IDS) || "{}";
+
+    const userMovieIds = JSON.parse(localStorageUserMovieIds);
+
+    if (user && userMovieIds[user.username]) {
       const userMovieIds = JSON.parse(localStorageUserMovieIds);
       dispatch({
         type: INITIALIZATION,

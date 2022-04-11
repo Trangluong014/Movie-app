@@ -3,28 +3,24 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, IconButton } from "@mui/material";
 import apiConfig from "../app/apiConfig";
 import { useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import useAuth from "../hooks/useAuth";
 import useFavorite from "../hooks/useFavorite";
-import { useLocation } from "react-router-dom";
 import noImage from "../no-image.png";
 
 import { Box } from "@mui/system";
 
 function ProductCard({ movie }) {
   const backgroundImage = apiConfig.originalImage(movie.backdrop_path);
-  // movie.backgroundImage = backgroundImage;
   const posterImage = apiConfig.w500Image(movie.poster_path);
-  // movie.posterImage = posterImage;
   const navigate = useNavigate();
-  const isLogin = useAuth();
-  const idList = useFavorite().idList;
-  const setIdList = useFavorite().setIdList;
-  const location = useLocation();
+  const { isAuthenticated } = useAuth();
+  const { movieIds, addMovie, removeMovie } = useFavorite();
+  const isAddedInFavorite = movieIds?.includes(movie.id);
 
   return (
     <Card className="movie-card">
@@ -55,27 +51,27 @@ function ProductCard({ movie }) {
             {movie.title}
           </Typography>
 
-          {idList[movie.id] ? (
-            <button onClick={() => setIdList({ ...idList, [movie.id]: false })}>
-              {" "}
-              <FavoriteIcon />
-            </button>
-          ) : (
-            <button
-              onClick={
-                isLogin.isAuthenticated
-                  ? () =>
-                      setIdList({
-                        ...idList,
-                        [movie.id]: movie,
-                      })
-                  : () => navigate("/login")
-              }
-              state={{ backgroundLocation: location }}
-            >
-              <FavoriteBorderIcon />
-            </button>
-          )}
+          {isAuthenticated ? (
+            <>
+              {isAddedInFavorite ? (
+                <IconButton
+                  size="large"
+                  sx={{ color: "black" }}
+                  onClick={() => removeMovie(movie.id)}
+                >
+                  <FavoriteIcon />
+                </IconButton>
+              ) : (
+                <IconButton
+                  size="large"
+                  sx={{ color: "black" }}
+                  onClick={() => addMovie(movie.id)}
+                >
+                  <FavoriteBorderIcon />
+                </IconButton>
+              )}
+            </>
+          ) : null}
         </Box>
       </CardContent>
     </Card>

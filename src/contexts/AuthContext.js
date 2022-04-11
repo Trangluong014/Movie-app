@@ -1,5 +1,4 @@
 import { createContext, useReducer, useEffect } from "react";
-import useFavorite from "../hooks/useFavorite";
 
 const initialState = {
   isInitialized: false,
@@ -33,7 +32,6 @@ const reducer = (state, action) => {
 
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { resetMovie } = useFavorite();
 
   useEffect(() => {
     const username = window.localStorage.getItem("username");
@@ -59,7 +57,6 @@ function AuthProvider({ children }) {
   const logout = (cb) => {
     dispatch({ type: LOGOUT });
     window.localStorage.removeItem("username");
-    resetMovie();
 
     cb();
   };

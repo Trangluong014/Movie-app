@@ -23,8 +23,6 @@ function BrowsePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  console.log("loading", loading);
-
   const getMoviesList = async () => {
     setLoading(true);
 

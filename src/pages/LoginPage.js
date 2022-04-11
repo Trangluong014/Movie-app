@@ -10,9 +10,11 @@ import { Box } from "@mui/system";
 
 const LoginSchema = yup.object().shape({
   username: yup.string().required("Username is required"),
+  password: yup.string().required("Password is required"),
 });
 const defaultValues = {
   username: "",
+  password: "",
 };
 
 const LoginPage = () => {
@@ -53,6 +55,7 @@ const LoginPage = () => {
             Login
           </Typography>
           <FTextField name="username" label="Username" />
+          <FTextField name="password" label="Password" type="password" />
           <Button type="submit" variant="contained">
             Login
           </Button>
